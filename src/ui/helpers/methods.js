@@ -36,19 +36,6 @@ export const getCities = str => {
 
 export const getDataFromOpenWeather = str => {
   return new Promise(function(resolve, reject) {
-    // axios
-    //   .get(
-    //     `http://api.openweathermap.org/data/2.5/forecast?q=${str}&APPID=3a0564475cd9c8abe61a00538aa65645`
-    //   )
-    //   .then(function(response) {
-    //     // handle success
-    //     return resolve(response.data.list);
-    //   })
-    //   .catch(function(error) {
-    //     // handle error
-    //     return reject(error);
-    //   });
-
     axios({
       method: "get",
       url: "http://api.openweathermap.org/data/2.5/forecast",

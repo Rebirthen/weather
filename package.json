@@ -9,6 +9,7 @@
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-scripts": "0.9.5",
+    "react-topbar-progress-indicator": "^4.0.2",
     "reactstrap": "^8.0.1"
   },
   "devDependencies": {},

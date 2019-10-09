@@ -1,32 +1,48 @@
 import React, { useState } from "react";
-import Input from "rambler-ui/Input";
-import FormGroup from "rambler-ui/FormGroup";
-import Button from "rambler-ui/Button";
+
 import { Container, Row, Col } from "reactstrap";
+import { InputStatus } from "rambler-ui";
 import { ComplexSearch, SuggestItem } from "rambler-ui/ComplexSearch";
 import "../css/App.css";
-import { getCities, getDataFromOpenWeather } from "../helpers/methods";
+import TopBarProgress from "react-topbar-progress-indicator";
 
+import { getCities, getDataFromOpenWeather } from "../helpers/methods";
+TopBarProgress.config({
+  barColors: {
+    "0": "#fac20b",
+    "1.0": "#fac20b"
+  },
+  shadowBlur: 5,
+  barThickness: 5
+});
 function Weather() {
   const [city, setCity] = useState({
     name: "",
-    isLoading: true,
-    serviceValue: ""
+    error: ""
   });
   const [cities, setCities] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchQuery = query => {
     if (!query) {
       setCities([]);
+      setCity({
+        error: ""
+      });
+      setLoading(false);
       return false;
     }
+
     setCity({
       ...city,
-      name: query
+      name: query,
+      error: ""
     });
+    setLoading(true);
 
     getCities(query).then(cities => {
       setCities(cities);
+      setLoading(false);
     });
   };
 
@@ -40,13 +56,21 @@ function Weather() {
 
   const onSelectItem = query => {
     setCities([]);
-    getDataFromOpenWeather(query).then(data => {
-      console.log("data", data);
-    });
+    getDataFromOpenWeather(query)
+      .then(data => {
+        console.log("data", data);
+      })
+      .catch(err => {
+        setCity({
+          ...city,
+          error: "Извините, погода для этого местоположения не найдена"
+        });
+      });
   };
 
   return (
     <div className="main">
+      {loading ? <TopBarProgress /> : null}
       <Container>
         <Row>
           <Col>
@@ -65,6 +89,7 @@ function Weather() {
                 <SuggestItem value={item}>{renderItem(item)}</SuggestItem>
               ))}
             </ComplexSearch>
+            {city.error && <InputStatus message={city.error} type="error" />}
           </Col>
         </Row>
       </Container>
