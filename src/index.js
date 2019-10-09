@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Weather from './Weather';
+import Weather from './ui/components/Weather';
 import { ApplyTheme } from 'rambler-ui/theme'
-import './index.css';
+import './ui/css/index.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 ReactDOM.render(
   <ApplyTheme>
