@@ -7,6 +7,7 @@ import "../css/App.css";
 import TopBarProgress from "react-topbar-progress-indicator";
 
 import { getCities, getDataFromOpenWeather } from "../helpers/methods";
+
 TopBarProgress.config({
   barColors: {
     "0": "#fac20b",
@@ -15,6 +16,7 @@ TopBarProgress.config({
   shadowBlur: 5,
   barThickness: 5
 });
+
 function Weather() {
   const [city, setCity] = useState({
     name: "",

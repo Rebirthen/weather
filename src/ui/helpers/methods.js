@@ -38,7 +38,7 @@ export const getDataFromOpenWeather = str => {
   return new Promise(function(resolve, reject) {
     axios({
       method: "get",
-      url: "http://api.openweathermap.org/data/2.5/forecast",
+      url: "https://api.openweathermap.org/data/2.5/forecast",
       params: {
         q: str,
         APPID: WEATHER_APPID

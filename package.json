@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
+    "gh-pages": "^2.1.1",
     "rambler-ui": "^3.49.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
@@ -13,10 +14,13 @@
     "reactstrap": "^8.0.1"
   },
   "devDependencies": {},
+  "homepage": "https://rebirthen.github.io/weather",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   }
 }
