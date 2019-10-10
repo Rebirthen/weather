@@ -7,6 +7,8 @@ import "../css/App.css";
 import TopBarProgress from "react-topbar-progress-indicator";
 
 import { getCities, getDataFromOpenWeather } from "../helpers/methods";
+import { H1, H2, List } from "rambler-ui/Typography";
+import moment from "moment";
 
 TopBarProgress.config({
   barColors: {
@@ -20,10 +22,13 @@ TopBarProgress.config({
 function Weather() {
   const [city, setCity] = useState({
     name: "",
+
     error: ""
   });
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState(false);
+  const [weatherData, setWeatherData] = useState([]);
 
   const fetchQuery = query => {
     if (!query) {
@@ -34,7 +39,7 @@ function Weather() {
       setLoading(false);
       return false;
     }
-
+    setSelected(false);
     setCity({
       ...city,
       name: query,
@@ -58,11 +63,16 @@ function Weather() {
 
   const onSelectItem = query => {
     setCities([]);
+    setLoading(true);
+
     getDataFromOpenWeather(query)
       .then(data => {
-        console.log("data", data);
+        setWeatherData(data);
+        setLoading(false);
+        setSelected(true);
       })
       .catch(err => {
+        setLoading(false);
         setCity({
           ...city,
           error: "Извините, погода для этого местоположения не найдена"
@@ -74,7 +84,7 @@ function Weather() {
     <div className="main">
       {loading ? <TopBarProgress /> : null}
       <Container>
-        <Row>
+        <Row style={{ "margin-top": "100px" }}>
           <Col>
             <ComplexSearch
               value={city.name}
@@ -94,6 +104,35 @@ function Weather() {
             {city.error && <InputStatus message={city.error} type="error" />}
           </Col>
         </Row>
+        {selected && (
+          <Row>
+            <H1>{city.name} </H1>
+          </Row>
+        )}
+        <Row>
+          {weatherData.length > 0 && (
+            <H2>
+              {"Сейчас: " +
+                weatherData[0].weather[0].description +
+                ", " +
+                parseInt(weatherData[0].main.temp_max) +
+                "°C"}{" "}
+            </H2>
+          )}
+        </Row>
+        {weatherData.map(item => {
+          return (
+            <Row>
+              <List>
+                <li>
+                  {"Дата: " + moment(item.dt * 1000).format("DD.MM - HH:mm")}
+                </li>
+                <li>{"Температура: " + parseInt(item.main.temp_max) + "°C"}</li>
+                <li>{item.weather[0].description}</li>
+              </List>
+            </Row>
+          );
+        })}
       </Container>
     </div>
   );

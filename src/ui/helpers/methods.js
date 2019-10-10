@@ -41,7 +41,9 @@ export const getDataFromOpenWeather = str => {
       url: "https://api.openweathermap.org/data/2.5/forecast",
       params: {
         q: str,
-        APPID: WEATHER_APPID
+        APPID: WEATHER_APPID,
+        units: "metric",
+        lang: "ru"
       }
     })
       .then(response => {
